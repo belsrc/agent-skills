@@ -4,7 +4,50 @@ All notable changes to the accelint-ac-to-playwright skill are documented in thi
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.10] - 2026-06-11
+## [2.0.2] - 2026-09-28
+
+### Fixed
+- Resolved failed-assessment recovery conflicts: assessment mode now owns the complete user-facing remediation route, while conversion stops plan and test generation.
+- Resolved invalid source-derived name failures by reporting and stopping without renaming or retrying translation.
+- Corrected the schema-diagnostic pairing example so it gives exactly one suggested fix.
+
+### Version
+- Bumped from 2.0.1 → 2.0.2
+
+## [2.0.1] - 2026-09-28
+
+### Fixed
+- Resolved the conflicting plan-persistence and validation instructions by requiring an in-memory schema preflight before writing the final plan, then verifying the persisted output with `npx validate-plan`.
+- Aligned schema-diagnostic field guidance with `scripts/plan-schema.ts`, including the test `name` field and optional mouse-button fields.
+
+### Changed
+- Added validated decision contracts for BAD-AC clarification mode, interactive update ownership, and optional Playwright config-template copying.
+
+### Version
+- Bumped from 2.0.0 → 2.0.1
+
+## [2.0.0] - 2026-09-28
+
+### Changed
+- **Major refactor: Progressive disclosure pattern with subagent-based validation**
+  - Rationale: Improved skill performance by reducing context bloat and enabling parallel validation; original SKILL.md was loading all validation rules upfront regardless of need
+  - Split SKILL.md into focused mode files:
+    - `agents/assessment-mode.md` - AC quality validation workflow
+    - `agents/conversion-mode.md` - Test generation workflow
+  - Created 6 specialized subagent validators (all run in parallel):
+    - `agents/validate-targets.md` - Format + controlled vocabulary validation using target-validator.ts
+    - `agents/validate-gherkin-structure.md` - Comprehensive .feature file structure validation
+    - `agents/validate-bullet-format.md` - Markdown bullet-style AC format validation
+    - `agents/validate-preconditions.md` - Given step context setup validation
+    - `agents/validate-actions.md` - When step action verb and parameter validation
+    - `agents/validate-assertions.md` - Then step explicitness and measurability validation
+  - Standardized input/output formats across all validators with line numbers for precise error reporting
+  - SKILL.md now serves as high-level orchestrator with mode detection, loading detailed workflows only when needed
+
+### Version
+- Bumped from 1.1.10 → 2.0.0
+
+## [1.1.10] - 2026-07-09
 
 ### Changed
 - Updated vulnerable dependencies
